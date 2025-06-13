@@ -1,5 +1,5 @@
-import Sequelize from "sequelize";
-import { dbHost, dbDialect, dbStorage } from "../config";
+const Sequelize = require("sequelize");
+const { dbHost, dbDialect, dbStorage } = require("../config");
 
 const sequelize = new Sequelize("database", "user", "password", {
     host: dbHost,
@@ -70,7 +70,7 @@ const dungeonInstanceTable = sequelize.define("dungeoninstances", {
         type: Sequelize.STRING,
         allowNull: true,
     },
-}, { freezeTableName: true, timestamps: true });
+});
 
 const errorTable = sequelize.define("errors", {
     error_id: {
@@ -90,7 +90,7 @@ const errorTable = sequelize.define("errors", {
         type: Sequelize.STRING,
         allowNull: false,
     },
-}, { freezeTableName: true, timestamps: true });
+});
 
 const interactionStatusTable = sequelize.define("interaction_status", {
     status_id: {
@@ -114,7 +114,7 @@ const interactionStatusTable = sequelize.define("interaction_status", {
         type: Sequelize.STRING,
         allowNull: false,
     },
-}, { freezeTableName: true, timestamps: true });
+});
 
 const thanksTable = sequelize.define("thanksTable", {
     thanks_id:{
@@ -134,22 +134,11 @@ const thanksTable = sequelize.define("thanksTable", {
         type: Sequelize.STRING,
         allowNull: false,
     },
-}, {
-    freezeTableName: true,
-    timestamps: true,
-    indexes: [
-        {
-            unique: false,
-            fields: ['thanker', 'player', 'createdAt']
-        }
-    ]
 });
 
 function syncTables() {
     // Never set force to true in a production environment as it will drop all tables
-    sequelize.sync({ force: false }).then(() => {
-        console.log("Database tables synced.");
-    });
+    sequelize.sync({ force: false });
 }
 
-export { syncTables, dungeonInstanceTable, errorTable, interactionStatusTable, thanksTable, sequelize };
+module.exports = { syncTables, dungeonInstanceTable, errorTable, interactionStatusTable, thanksTable, sequelize };
