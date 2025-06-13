@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const { dbHost, dbDialect, dbStorage } = require("../config");
+import Sequelize from "sequelize";
+import { dbHost, dbDialect, dbStorage } from "../config";
 
 const sequelize = new Sequelize("database", "user", "password", {
     host: dbHost,
@@ -116,9 +116,29 @@ const interactionStatusTable = sequelize.define("interaction_status", {
     },
 });
 
+const thanksTable = sequelize.define("thanksTable", {
+    thanks_id:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    thanker: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    player: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    thanks_type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+});
+
 function syncTables() {
     // Never set force to true in a production environment as it will drop all tables
     sequelize.sync({ force: false });
 }
 
-module.exports = { syncTables, dungeonInstanceTable, errorTable, interactionStatusTable, sequelize };
+export { syncTables, dungeonInstanceTable, errorTable, interactionStatusTable, thanksTable, sequelize };
