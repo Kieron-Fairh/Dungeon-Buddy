@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { token } = require("./config");
+const { syncTables } = require("./utils/loadDb"); // <-- Add this line
 
 // Initialize a global map to store roles
 global.roleMap = new Map();
@@ -42,5 +43,18 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args));
     }
 }
+
+// ⬇️ Wrap the startup in an async IIFE
+(async () => {
+    try {
+        await syncTables(); // ⬅️ This will create tables if they're missing
+        console.log("✅ Tables synced successfully.");
+
+        await client.login(token);
+        console.log("🤖 Bot logged in.");
+    } catch (error) {
+        console.error("❌ Failed to start bot:", error);
+    }
+})();
 
 client.login(token);
