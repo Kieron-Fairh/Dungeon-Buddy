@@ -1,9 +1,5 @@
 require("dotenv").config();
 
-const { token } = require("./config");
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Using token:", token ? token.substring(0, 8) + "..." : "NO TOKEN");
-
 const prodEnv = process.env.NODE_ENV === "production";
 
 // Define and export the token based on the environment
