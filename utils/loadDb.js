@@ -1,9 +1,10 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const { dbStorage } = require("../config");  // should point to your sqlite file path
+const Sequelize = require("sequelize");
+const { dbHost, dbDialect, dbStorage } = require("../config");
 
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: dbStorage || "./dungeoninstances.sqlite",  // fallback path if not set in config
+const sequelize = new Sequelize("database", "user", "password", {
+    host: dbHost,
+    dialect: dbDialect,
+    storage: dbStorage,
 });
 
 // Table definitions
